@@ -10,10 +10,10 @@ import datetime
 # All Fields:
 # ['FID', 'IdBundesland', 'Bundesland','Landkreis',
 # 'Altersgruppe', 'Geschlecht', 'AnzahlFall', 'AnzahlTodesfall',
-# 'Meldedatum']
+# 'Refdatum']
 
 fields = ["IdLandkreis", "IdBundesland", "Altersgruppe", "Geschlecht", "AnzahlFall",
-          "AnzahlTodesfall", "Meldedatum"]
+          "AnzahlTodesfall", "Refdatum"]
 
 # read Csv in Chunks
 def chunkedCSVReaderWithFields(fields, csvName):
@@ -24,10 +24,10 @@ def chunkedCSVReaderWithFields(fields, csvName):
 df = chunkedCSVReaderWithFields(fields, 'RKI_COVID19_history.csv')
 
 #Only keep 2021 Data / Omit everything that is earlier than 2021
-df['Meldedatum']= pd.to_datetime(df['Meldedatum'])
-df.drop(df[df['Meldedatum'] < datetime.datetime(2021,1,1)].index, inplace=True)
+df['Refdatum']= pd.to_datetime(df['Refdatum'])
+df.drop(df[df['Refdatum'] < datetime.datetime(2021,1,1)].index, inplace=True)
 
-#df = df.set_index('Meldedatum')
+#df = df.set_index('Refdatum')
 print(df.iloc[500000:500005])
 
 #Initialize with first Landkreis and first date of year
@@ -37,18 +37,20 @@ cumulatingBundesland = '1'
 cases = 0
 deaths = 0
 
+# - Doesnt do what it should do. Just Kicks some columns i guess...
+# need to delete / refactor.
 # Cumulate cases per day, ignoring sex and age groups
 with open('RKI_COVID19_history_2021_cut.csv', mode='w', newline='') as ags_file:
         ags_writer = csv.writer(ags_file, delimiter=',')
         ags_writer.writerow(['IdBundesland','IdLandkreis'
                                         ,'AnzahlFall'
                                         ,'AnzahlTodesfall',
-                                        'Meldedatum'])
+                                        'Refdatum'])
 
         for i, row in df.iterrows():
             #Save current AGS to check
             currentLandkreis = row['IdLandkreis']
-            currentTimestamp = row['Meldedatum']
+            currentTimestamp = row['Refdatum']
             currentBundesland = row['IdBundesland']
             if(currentLandkreis == cumulatingLandkreis):
                 if(currentTimestamp == cumulatingTimestamp):
