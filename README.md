@@ -11,4 +11,4 @@ For now (plottingCovid.py) plots the reported cases surrounding the date of the 
 1.FC Köln vs Borussia Mönchengladbach <br>
 in the Landkreis (ags) SK Köln. (Id: 5315). <br>
 
-![image](https://user-images.githubusercontent.com/71510696/144852126-f77aa018-7b60-4abe-8d7a-d840fbba0cc4.png)
+![image](https://user-images.githubusercontent.com/71510696/146193799-69667c40-d311-4cc7-b484-1219b0f827ed.png)
